@@ -2,8 +2,8 @@
     <div id="form-todo">
         <h1 id="title">Todo App</h1>
         <div id="input-container">
-            <input type="text" id="input-todo">
-            <button id="add-btn">
+            <input type="text" id="input-todo" v-model="task" @keyup.enter="addTodo">
+            <button id="add-btn" @click="addTodo">
                 <i class="fa fa-plus"></i>
             </button>
         </div>
@@ -12,7 +12,35 @@
 
 <script>
     export default{
-        name: 'FormTodo'
+        name: 'FormTodo',
+        props: {
+            todos: Array
+        },
+        data(){
+            return{
+                task: ''
+            }
+        },
+        methods: {
+            addTodo(){
+                this.task = this.task.trim();
+                if(this.task.length >= 3){
+                    const todoAlreadyExists = this.todos.some(todo => todo.task.toLowerCase() === this.task.toLowerCase());
+                    console.log(todoAlreadyExists);
+                    if(!todoAlreadyExists){
+                        this.$emit('add-todo', {
+                            task: this.task,
+                            done: false
+                        });
+                        this.task = '';
+                    } else{
+                        this.$emit('show-error-message', 'Ops, essa task já existe!');    
+                    }
+                } else if(this.task.length > 0){
+                    this.$emit('show-error-message', 'A task deve ter no mínimo 3 caracteres para ser adicionada');
+                }
+            }
+        }
     }
 </script>
 
