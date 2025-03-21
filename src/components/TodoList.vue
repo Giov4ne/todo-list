@@ -5,12 +5,13 @@
             <li v-for="(todo, index) in todos" :key="index">
                 <label :for="'todo-' + index">
                     <input type="checkbox" :id="'todo-' + index" v-model="todo.done" class="check-todo">
-                    <del v-if="todo.done">{{ todo.task }}</del>
+                    <input v-if="indexToEdit === index" :value="todo.task" @keyup.enter="editTodo($event.target.value)" @blur="editTodo($event.target.value)" type="text" id="edit-input" selected>
+                    <del v-else-if="todo.done">{{ todo.task }}</del>
                     <span v-else>{{ todo.task }}</span>
                 </label>
                 <div>
                     <span class="todo-options" title="Excluir" @click="deleteTodo(index)">❌</span>
-                    <span class="todo-options" title="Editar">✏️</span>
+                    <span class="todo-options" title="Editar" @click="selectTodoToEdit(index)">✏️</span>
                 </div>
             </li>
         </ul>
@@ -40,7 +41,8 @@ import FormTodo from './FormTodo.vue';
                 todos: [],
                 errorMsg: '',
                 deleting: false,
-                idToDelete: -1
+                indexToDelete: -1,
+                indexToEdit: -1
             }
         },
         methods: {
@@ -52,24 +54,37 @@ import FormTodo from './FormTodo.vue';
                 this.todos.push(todo);
             },
 
-            deleteTodo(id){
-                if(!this.todos[id].done){
+            deleteTodo(index){
+                if(!this.todos[index].done){
                     this.deleting = true;
-                    this.idToDelete = id;
+                    this.indexToDelete = index;
                 } else{
-                    this.removeTodo(id);
+                    this.removeTodo(index);
                 }
             },
 
             confirmDeletion(isDeleting){
-                if(isDeleting && this.idToDelete > -1)
-                    this.removeTodo(this.idToDelete);
+                if(isDeleting && this.indexToDelete > -1)
+                    this.removeTodo(this.indexToDelete);
                 this.deleting = false
-                this.idToDelete = -1;
+                this.indexToDelete = -1;
             },
 
-            removeTodo(id){
-                this.todos.splice(id, 1);
+            removeTodo(index){
+                this.todos.splice(index, 1);
+            },
+
+            selectTodoToEdit(index){
+                this.indexToEdit = index;
+                this.$nextTick(() => {
+                    document.getElementById('edit-input').focus()
+                });
+            },
+
+            editTodo(newTask){
+                if(this.indexToEdit > -1)
+                    this.todos[this.indexToEdit].task = newTask;
+                this.indexToEdit = -1;
             },
 
             showErrorMessage(msg){
@@ -191,5 +206,14 @@ import FormTodo from './FormTodo.vue';
         &:hover{
             background-color: #ffa24c;
         }
+    }
+
+    #edit-input{
+        font-size: 18px;
+        outline: none;
+        border: none;
+        background-color: transparent;
+        color: var(--text-color);
+        background-color: #686868;
     }
 </style>
