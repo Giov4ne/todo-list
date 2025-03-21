@@ -16,6 +16,15 @@
         </ul>
     </main>
     <div v-if="errorMsg !== ''" id="error-message">{{ errorMsg }}</div>
+    <div v-if="deleting" id="delete-confirm-container">
+        <div id="confirmation-box">
+            <p>Essa task ainda não foi concluída, tem certeza que deseja excluí-la?</p>
+            <div id="confirmation-buttons">
+                <button class="confirm-btn" @click="confirmDeletion(true)">Sim</button>
+                <button class="confirm-btn" @click="confirmDeletion(false)">Não</button>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
@@ -29,7 +38,9 @@ import FormTodo from './FormTodo.vue';
         data(){
             return{
                 todos: [],
-                errorMsg: ''
+                errorMsg: '',
+                deleting: false,
+                idToDelete: -1
             }
         },
         methods: {
@@ -42,6 +53,22 @@ import FormTodo from './FormTodo.vue';
             },
 
             deleteTodo(id){
+                if(!this.todos[id].done){
+                    this.deleting = true;
+                    this.idToDelete = id;
+                } else{
+                    this.removeTodo(id);
+                }
+            },
+
+            confirmDeletion(isDeleting){
+                if(isDeleting && this.idToDelete > -1)
+                    this.removeTodo(this.idToDelete);
+                this.deleting = false
+                this.idToDelete = -1;
+            },
+
+            removeTodo(id){
                 this.todos.splice(id, 1);
             },
 
@@ -122,5 +149,47 @@ import FormTodo from './FormTodo.vue';
         left: 50%;
         transform: translateX(-50%);
         z-index: 1;
+    }
+
+    #delete-confirm-container{
+        background-color: #000000b6;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        width: 100vw;
+        height: 100vh;
+    }
+
+    #confirmation-box{
+        background-color: #474747;
+        position: fixed;
+        top: 40%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+        padding: 15px;
+        border-radius: 5px;
+        width: 450px;
+        color: var(--text-color);font-size: 18px;
+    }
+
+    #confirmation-buttons{
+        display: flex;
+        justify-content: center;
+    }
+
+    .confirm-btn{
+        padding: 5px 9px;
+        margin: 8px 4px 0 4px;
+        font-size: 18px;
+        background-color: #ffb951;
+        color: #000;
+        outline: none;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        &:hover{
+            background-color: #ffa24c;
+        }
     }
 </style>
