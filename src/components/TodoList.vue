@@ -126,7 +126,7 @@ import FormTodo from './FormTodo.vue';
     }
 
     #list-container li{
-        border-bottom: 1px solid #ffb951;
+        border-bottom: 1px solid var(--color1);
         padding: 8px 12px;
         margin-bottom: 8px;
         display: flex;
@@ -147,7 +147,7 @@ import FormTodo from './FormTodo.vue';
         min-height: 18px;
         cursor: pointer;
         &:checked{
-            accent-color: #ffb951;
+            accent-color: var(--color1);
         }
     }
 
@@ -160,15 +160,15 @@ import FormTodo from './FormTodo.vue';
     del{
         text-decoration: line-through;
         text-decoration-thickness: 2px;
-        color: #686868;
+        color: var(--color2);
     }
 
     #error-message{
-        background-color: #E8363B;
+        background-color: var(--error-message-color);
         padding: 10px;
         border-radius: 5px;
         font-size: 14px;
-        color: #fff;
+        color: var(--text-color);
         position: fixed;
         bottom: 7%;
         left: 50%;
@@ -177,7 +177,7 @@ import FormTodo from './FormTodo.vue';
     }
 
     #delete-confirm-container{
-        background-color: #000000b6;
+        background-color: var(--third-background-color);
         position: fixed;
         top: 0;
         left: 0;
@@ -187,7 +187,7 @@ import FormTodo from './FormTodo.vue';
     }
 
     #confirmation-box{
-        background-color: #474747;
+        background-color: var(--second-background-color);
         position: fixed;
         top: 40%;
         left: 50%;
@@ -208,14 +208,14 @@ import FormTodo from './FormTodo.vue';
         padding: 5px 9px;
         margin: 8px 4px 0 4px;
         font-size: 18px;
-        background-color: #ffb951;
-        color: #000;
+        background-color: var(--color1);
+        color: var(--color4);
         outline: none;
         border: none;
         border-radius: 5px;
         cursor: pointer;
         &:hover{
-            background-color: #ffa24c;
+            background-color: var(--main-hover-color);
         }
     }
 

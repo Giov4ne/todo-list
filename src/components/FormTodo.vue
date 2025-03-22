@@ -68,23 +68,23 @@
         outline: none;
         border: none;
         border-radius: 5px 0 0 5px;
-        background-color: #474747;
+        background-color: var(--second-background-color);
         color: var(--text-color);
         &:hover{
-            background-color: #3b3b3b;
+            background-color: var(--color3);
         }
     }
 
     #add-btn{
         padding: 5px 9px;
         font-size: 18px;
-        background-color: #ffb951;
+        background-color: var(--color1);
         outline: none;
         border: none;
         border-radius: 0 5px 5px 0;
         cursor: pointer;
         &:hover{
-            background-color: #ffa24c;
+            background-color: var(--main-hover-color);
         }
     }
 
