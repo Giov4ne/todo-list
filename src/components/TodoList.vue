@@ -77,13 +77,23 @@ import FormTodo from './FormTodo.vue';
             selectTodoToEdit(index){
                 this.indexToEdit = index;
                 this.$nextTick(() => {
-                    document.getElementById('edit-input').focus()
+                    const editInput = document.getElementById('edit-input');
+                    editInput.focus();
+                    editInput.select();
                 });
             },
 
             editTodo(newTask){
-                if(this.indexToEdit > -1)
-                    this.todos[this.indexToEdit].task = newTask;
+                if(this.indexToEdit > -1){
+                    newTask = newTask.trim();
+                    const todoAlreadyExists = this.todos.some((todo, index) => index !== this.indexToEdit && todo.task.toLowerCase() === newTask.toLowerCase());
+                    if(todoAlreadyExists)
+                        this.showErrorMessage('Ops, essa task já existe!');
+                    else if(newTask.length < 3)
+                        this.showErrorMessage('A task deve ter no mínimo 3 caracteres');
+                    else
+                        this.todos[this.indexToEdit].task = newTask;
+                }
                 this.indexToEdit = -1;
             },
 
@@ -185,7 +195,8 @@ import FormTodo from './FormTodo.vue';
         padding: 15px;
         border-radius: 5px;
         width: 450px;
-        color: var(--text-color);font-size: 18px;
+        color: var(--text-color);
+        font-size: 18px;
     }
 
     #confirmation-buttons{
@@ -214,6 +225,35 @@ import FormTodo from './FormTodo.vue';
         border: none;
         background-color: transparent;
         color: var(--text-color);
-        background-color: #686868;
+    }
+
+    @media screen and (max-width: 670px){
+        #list-container li{
+            width: 90vw;
+        }
+    }
+
+    @media screen and (max-width: 490px){
+        #confirmation-box{
+            width: 90%;
+        }
+    }
+
+    @media screen and (max-width: 230px){
+        #list-container li label{
+            word-break: break-all;
+            margin-right: 4px;
+        }
+
+        #list-container li label .check-todo{
+            margin-right: 4px;
+            min-width: 15px;
+            min-height: 15px;
+        }
+
+        #list-container li .todo-options{
+            margin-left: 1px;
+            font-size: 18px;
+        }
     }
 </style>

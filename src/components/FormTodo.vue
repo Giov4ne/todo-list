@@ -26,7 +26,6 @@
                 this.task = this.task.trim();
                 if(this.task.length >= 3){
                     const todoAlreadyExists = this.todos.some(todo => todo.task.toLowerCase() === this.task.toLowerCase());
-                    console.log(todoAlreadyExists);
                     if(!todoAlreadyExists){
                         this.$emit('add-todo', {
                             task: this.task,
@@ -86,6 +85,31 @@
         cursor: pointer;
         &:hover{
             background-color: #ffa24c;
+        }
+    }
+
+    @media screen and (max-width: 430px){
+        #form-todo{
+            margin: 26px 5px 5px 5px;
+        }
+
+        #input-container{
+            width: 100%;
+        }
+
+        #input-todo{
+            width: 90%;
+        }
+
+        #add-btn{
+            width: 35px;
+        }
+    }
+
+    @media screen and (max-width: 200px){
+        #add-btn{
+            padding: 5px 6px;
+            width: 32px;
         }
     }
 </style>
